@@ -3,6 +3,6 @@ import express from "express";
 
 const router = express.Router();
 
-router.post('/',createShortUrl);
+router.post("/", createShortUrl);
 
-export default router ;
+export default router;
