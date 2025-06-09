@@ -11,9 +11,10 @@ export const registerUser = wrapAsync(async (req, res) => {
   if (!token) {
     res.status(404).json({ message: "token not found" });
   }
+
   req.user = user;
   res.cookie("accessToken", token, cookieOptions);
-  res.status(200).json({ message: "register successfully" });
+  res.status(200).json({ user : user,message: "register successfully" });
 });
 
 export const loginUser = wrapAsync(async (req, res) => {
@@ -22,5 +23,15 @@ export const loginUser = wrapAsync(async (req, res) => {
 
   req.user = user;
   res.cookie("accessToken", token, cookieOptions);
-  res.status(200).json({ message: "login successfully" });
+  res.status(200).json({ user:user,message: "login successfully" });
 });
+
+
+export const logoutUser = wrapAsync(async(req,res)=>{
+    res.clearCookie("accessToken",cookieOptions);
+    res.status(200).json({message:"logout successfully"})
+})
+
+export const getCurrentUser = wrapAsync(async(req,res)=>{
+     res.status(200).json({user:req.user,message:"user fetch successfully"})
+})

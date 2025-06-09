@@ -3,6 +3,7 @@ import dotenv from "dotenv" ;
 import connectDB from "./src/config/mongodb.config.js";
 import shortUrlRouter from "./src/routes/shortUrl.route.js";
 import authRouter from "./src/routes/auth.route.js";
+import userRouter from "./src/routes/user.route.js"
 import { redirectFromShortUrl } from "./src/controllers/shortUrl.controller.js";
 import { errorHandler } from "./src/utils/errorHandler.js";
 import cors from 'cors';
@@ -12,7 +13,10 @@ import { attachUser } from "./src/utils/attachUser.js";
 dotenv.config("./.env");
 
 const app = express() ;
-app.use(cors())
+app.use(cors({
+  origin: `${process.env.FRONTEND_ORIGIN}`,     // Must match frontend origin
+  credentials: true,                   // Allow sending cookies
+}))
 app.use(express.json());
 app.use(express.urlencoded({extended:true})); 
 app.use(cookieParser());
@@ -21,7 +25,7 @@ app.use(attachUser);
 app.use('/api/auth',authRouter);
 app.use('/api/create',shortUrlRouter);
 app.get('/:id',redirectFromShortUrl);
-
+app.use('/api/user',userRouter);
 app.get('/',(req,res)=>{
     res.send('app is live');  
 })
